@@ -1,6 +1,7 @@
 package com.bridgelabz;
 
 import java.util.Scanner;
+import java.util.concurrent.Callable;
 
 public class TicTacToe {
     public enum CurrentPlayer {
@@ -89,15 +90,31 @@ public class TicTacToe {
         System.out.println("player move to position " + position);
     }
 
+    static CurrentPlayer toss() {
+        if ((int) (Math.random() * 10) % 2 == 1) {
+            System.out.println("player will start the game");
+            return CurrentPlayer.PLAYER;
+        } else {
+            System.out.println("computer will start the game");
+            return CurrentPlayer.COMPUTER;
+        }
+    }
+
     public static void main(String[] args) {
         createBoard(board);
         getLetter();
         showBoard(board);
         playerMove();
         showBoard(board);
-
+        CurrentPlayer currentPlayer = toss();
+        System.out.println(currentPlayer);
     }
-
 }
+
+
+
+
+
+
 
 
