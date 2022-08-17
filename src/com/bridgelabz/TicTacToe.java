@@ -1,7 +1,7 @@
 package com.bridgelabz;
 
 import java.util.Scanner;
-import java.util.concurrent.Callable;
+
 
 public class TicTacToe {
     public enum CurrentPlayer {
@@ -88,7 +88,6 @@ public class TicTacToe {
         }
         makeMove(position, playerLetter, board);
         System.out.println("player move to position " + position);
-        isGameOver(board, playerLetter);
     }
 
     static CurrentPlayer toss() {
@@ -257,7 +256,7 @@ public class TicTacToe {
         return false;
     }
 
-    static boolean takeCorner(char[] board, char letter) {
+    static boolean takeCornerOrCenter(char[] board, char letter) {
         if (board[1] == ' ') {
             board[1] = letter;
             return true;
@@ -275,11 +274,11 @@ public class TicTacToe {
     }
 
     public static void main(String[] args) {
+        CurrentPlayer currentPlayer = toss();
         createBoard(board);
         getLetter();
-        CurrentPlayer currentPlayer = toss();
         boolean isBlockAble;
-        boolean isGameOver;
+        boolean isGameOver = true;
         boolean isWinable;
         while (true) {
             if (currentPlayer == CurrentPlayer.PLAYER) {
@@ -287,22 +286,24 @@ public class TicTacToe {
                 isGameOver = isGameOver(board, playerLetter);
             } else {
                 isWinable = isWinable(board);
-                isBlockAble = isBlockAble(board);
-
                 if (isWinable) {
                     showBoard(board);
                     break;
                 }
+                isBlockAble = isBlockAble(board);
                 if (!isBlockAble) {
-                    computerMove();
+                    boolean takeCornerOrCenter = takeCornerOrCenter(board, computerLetter);
+                    if (!takeCornerOrCenter) {
+                        computerMove();
+                    }
+                    isGameOver = isGameOver(board, computerLetter);
                 }
-                isGameOver = isGameOver(board, computerLetter);
+                showBoard(board);
+                if (isGameOver) {
+                    break;
+                }
+                currentPlayer = (currentPlayer == CurrentPlayer.COMPUTER) ? CurrentPlayer.PLAYER : CurrentPlayer.COMPUTER;
             }
-            showBoard(board);
-            if (isGameOver) {
-                break;
-            }
-            currentPlayer = (currentPlayer == CurrentPlayer.COMPUTER) ? CurrentPlayer.PLAYER : CurrentPlayer.COMPUTER;
         }
     }
 }
