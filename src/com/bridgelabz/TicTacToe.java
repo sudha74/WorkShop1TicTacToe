@@ -273,28 +273,41 @@ public class TicTacToe {
         return false;
     }
 
+    static boolean playAgain() {
+        System.out.println("if u want to play again press Y");
+        char choice = scanner.next().toUpperCase().charAt(0);
+        if (choice == 'Y') {
+            return true;
+        } else {
+            System.out.println("ThankYou for Playing !!");
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
-        CurrentPlayer currentPlayer = toss();
-        createBoard(board);
-        getLetter();
-        boolean isBlockAble;
-        boolean isGameOver = true;
-        boolean isWinable;
-        while (true) {
-            if (currentPlayer == CurrentPlayer.PLAYER) {
-                playerMove();
-                isGameOver = isGameOver(board, playerLetter);
-            } else {
-                isWinable = isWinable(board);
-                if (isWinable) {
-                    showBoard(board);
-                    break;
-                }
-                isBlockAble = isBlockAble(board);
-                if (!isBlockAble) {
-                    boolean takeCornerOrCenter = takeCornerOrCenter(board, computerLetter);
-                    if (!takeCornerOrCenter) {
-                        computerMove();
+        do {
+            CurrentPlayer currentPlayer = toss();
+            createBoard(board);
+            getLetter();
+            boolean isBlockAble;
+            boolean isGameOver = true;
+            boolean isWinable;
+            while (true) {
+                if (currentPlayer == CurrentPlayer.PLAYER) {
+                    playerMove();
+                    isGameOver = isGameOver(board, playerLetter);
+                } else {
+                    isWinable = isWinable(board);
+                    if (isWinable) {
+                        showBoard(board);
+                        break;
+                    }
+                    isBlockAble = isBlockAble(board);
+                    if (!isBlockAble) {
+                        boolean takeCornerOrCenter = takeCornerOrCenter(board, computerLetter);
+                        if (!takeCornerOrCenter) {
+                            computerMove();
+                        }
                     }
                     isGameOver = isGameOver(board, computerLetter);
                 }
@@ -304,9 +317,12 @@ public class TicTacToe {
                 }
                 currentPlayer = (currentPlayer == CurrentPlayer.COMPUTER) ? CurrentPlayer.PLAYER : CurrentPlayer.COMPUTER;
             }
-        }
+        } while (playAgain());
     }
 }
+
+
+
 
 
 
