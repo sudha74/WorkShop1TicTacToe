@@ -160,6 +160,40 @@ public class TicTacToe {
         }
         return false;
     }
+    static void computerMove() {
+        position = (int) (Math.random() * 10) % 9 + 1;
+        while (board[position] != ' ') {
+            position = (int) (Math.random() * 10) % 9 + 1;
+        }
+        makeMove(position, computerLetter, board);
+        System.out.println("computer moved to position " + position);
+    }
+    public static boolean isGameOver(char[] board, char letter) {
+        boolean option1 = (board[1] == letter && board[2] == letter && board[3] == letter);
+        boolean option2 = (board[4] == letter && board[5] == letter && board[6] == letter);
+        boolean option3 = (board[7] == letter && board[8] == letter && board[9] == letter);
+        boolean option4 = (board[1] == letter && board[4] == letter && board[7] == letter);
+        boolean option5 = (board[2] == letter && board[5] == letter && board[8] == letter);
+        boolean option6 = (board[3] == letter && board[6] == letter && board[9] == letter);
+        boolean option7 = (board[1] == letter && board[5] == letter && board[9] == letter);
+        boolean option8 = (board[3] == letter && board[5] == letter && board[7] == letter);
+        if (option1 || option2 || option3 || option4 || option5 || option6 || option7 || option8) {
+            if (letter==playerLetter){
+                System.out.println("Player Wins");
+            }else {
+                System.out.println("Computer wins !!!");
+            }
+
+            return true;
+        }
+        if (board[1] != ' ' && board[2] != ' ' && board[3] != ' ' && board[4] != ' ' && board[5] != ' ' && board[6] != ' ' && board[7] != ' ' && board[8] != ' ' && board[9] != ' ') {
+            System.out.println("Tie!!");
+            return true;
+        }
+        return false;
+
+    }
+
 
     static boolean isBlockAble(char[] board) {
         for (int i = 1; i < 10; i += 3) {
@@ -221,66 +255,17 @@ public class TicTacToe {
         return false;
     }
 
-    static void computerMove() {
-        position = (int) (Math.random() * 10) % 9 + 1;
-        while (board[position] != ' ') {
-            position = (int) (Math.random() * 10) % 9 + 1;
-        }
-        makeMove(position, computerLetter, board);
-        System.out.println("computer moved to position " + position);
-    }
-
-    public static boolean isGameOver(char[] board, char letter) {
-        boolean option1 = (board[1] == letter && board[2] == letter && board[3] == letter);
-        boolean option2 = (board[4] == letter && board[5] == letter && board[6] == letter);
-        boolean option3 = (board[7] == letter && board[8] == letter && board[9] == letter);
-        boolean option4 = (board[1] == letter && board[4] == letter && board[7] == letter);
-        boolean option5 = (board[2] == letter && board[5] == letter && board[8] == letter);
-        boolean option6 = (board[3] == letter && board[6] == letter && board[9] == letter);
-        boolean option7 = (board[1] == letter && board[5] == letter && board[9] == letter);
-        boolean option8 = (board[3] == letter && board[5] == letter && board[7] == letter);
-        if (option1 || option2 || option3 || option4 || option5 || option6 || option7 || option8) {
-            System.out.println("player wins !!!");
-            return true;
-        }
-        if (board[1] != ' ' && board[2] != ' ' && board[3] != ' ' && board[4] != ' ' && board[5] != ' ' && board[6] != ' ' && board[7] != ' ' && board[8] != ' ' && board[9] != ' ') {
-            System.out.println("Tie!!");
-            return true;
-        }
-        return false;
-
-    }
-
     public static void main(String[] args) {
         createBoard(board);
         getLetter();
+        showBoard(board);
+        playerMove();
+        showBoard(board);
+        computerMove();
+        showBoard(board);
         CurrentPlayer currentPlayer = toss();
-        boolean isBlockAble;
-        boolean isGameOver;
-        boolean isWinable;
-        while (true) {
-            if (currentPlayer == CurrentPlayer.PLAYER) {
-                playerMove();
-                isGameOver = isGameOver(board, playerLetter);
-            } else {
-                isWinable = isWinable(board);
-                isBlockAble = isBlockAble(board);
+        System.out.println(currentPlayer);
 
-                if (isWinable) {
-                    showBoard(board);
-                    break;
-                }
-                if (!isBlockAble) {
-                    computerMove();
-                }
-                isGameOver = isGameOver(board, computerLetter);
-            }
-            showBoard(board);
-            if (isGameOver) {
-                break;
-            }
-            currentPlayer = (currentPlayer == CurrentPlayer.COMPUTER) ? CurrentPlayer.PLAYER : CurrentPlayer.COMPUTER;
-        }
     }
 }
 
